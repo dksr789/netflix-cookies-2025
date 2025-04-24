@@ -1,15 +1,14 @@
-< !DOCTYPE html>
-    <html lang="en">
+<html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Netflix Authentication Documentation: Technical Analysis of Streaming Cookies</title>
-        <meta name="description"
-            content="Technical documentation and reference guide explaining Netflix cookies, authentication mechanisms, and streaming security protocols in 2025.">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Authentication Documentation: Technical Analysis of Streaming Cookies</title>
+    <meta name="description"
+        content="Technical documentation and reference guide explaining Netflix cookies, authentication mechanisms, and streaming security protocols in 2025.">
 
-        <!-- Schema Markup -->
-        <script type="application/ld+json">
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
                             {
                                 "@context": "https://schema.org",
                             "@type": "TechnicalArticle",
@@ -35,707 +34,707 @@
     }
                         </script>
 
-        <style>
-            :root {
-                --primary: #0d1117;
-                --secondary: #161b22;
-                --accent: #58a6ff;
-                --accent-light: #79c0ff;
-                --text: #c9d1d9;
-                --text-secondary: #8b949e;
-                --border: #30363d;
-                --code-bg: #0d1117;
-                --code-block: #1e242c;
-                --link: #58a6ff;
-                --link-hover: #79c0ff;
-                --success: #3fb950;
-                --warning: #d29922;
-                --danger: #f85149;
-            }
+    <style>
+        :root {
+            --primary: #0d1117;
+            --secondary: #161b22;
+            --accent: #58a6ff;
+            --accent-light: #79c0ff;
+            --text: #c9d1d9;
+            --text-secondary: #8b949e;
+            --border: #30363d;
+            --code-bg: #0d1117;
+            --code-block: #1e242c;
+            --link: #58a6ff;
+            --link-hover: #79c0ff;
+            --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
+        }
 
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        }
 
-            body {
-                background-color: var(--primary);
-                color: var(--text);
-                line-height: 1.6;
-                font-size: 16px;
-                position: relative;
-            }
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 16px;
+            position: relative;
+        }
 
-            a {
-                color: var(--link);
-                text-decoration: none;
-                transition: color 0.2s ease;
-            }
+        a {
+            color: var(--link);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
 
-            a:hover {
-                color: var(--link-hover);
-                text-decoration: underline;
-            }
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
 
-            h1,
-            h2,
-            h3,
-            h4,
-            h5,
-            h6 {
-                margin-top: 24px;
-                margin-bottom: 16px;
-                font-weight: 600;
-                line-height: 1.25;
-                scroll-margin-top: 70px;
-            }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            scroll-margin-top: 70px;
+        }
 
-            h1 {
-                font-size: 2em;
-                padding-bottom: 0.3em;
-                border-bottom: 1px solid var(--border);
-            }
+        h1 {
+            font-size: 2em;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--border);
+        }
 
-            h2 {
-                font-size: 1.5em;
-                padding-bottom: 0.3em;
-                border-bottom: 1px solid var(--border);
-            }
+        h2 {
+            font-size: 1.5em;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--border);
+        }
 
-            h3 {
-                font-size: 1.25em;
-            }
+        h3 {
+            font-size: 1.25em;
+        }
 
-            p {
-                margin-bottom: 16px;
-            }
+        p {
+            margin-bottom: 16px;
+        }
 
-            ul,
-            ol {
-                margin-bottom: 16px;
-                padding-left: 2em;
-            }
+        ul,
+        ol {
+            margin-bottom: 16px;
+            padding-left: 2em;
+        }
 
-            li {
-                margin-bottom: 8px;
-            }
+        li {
+            margin-bottom: 8px;
+        }
 
-            code {
-                font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-                padding: 0.2em 0.4em;
-                margin: 0;
-                font-size: 85%;
-                background-color: rgba(110, 118, 129, 0.4);
-                border-radius: 6px;
-            }
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            padding: 0.2em 0.4em;
+            margin: 0;
+            font-size: 85%;
+            background-color: rgba(110, 118, 129, 0.4);
+            border-radius: 6px;
+        }
 
-            pre {
-                background-color: var(--code-block);
-                border-radius: 6px;
-                padding: 16px;
-                overflow: auto;
-                font-size: 85%;
-                line-height: 1.45;
-                margin-bottom: 16px;
-            }
+        pre {
+            background-color: var(--code-block);
+            border-radius: 6px;
+            padding: 16px;
+            overflow: auto;
+            font-size: 85%;
+            line-height: 1.45;
+            margin-bottom: 16px;
+        }
 
-            pre code {
-                background-color: transparent;
-                padding: 0;
-            }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
 
-            blockquote {
-                padding: 0 1em;
-                color: var(--text-secondary);
-                border-left: 0.25em solid var(--border);
-                margin-bottom: 16px;
-            }
+        blockquote {
+            padding: 0 1em;
+            color: var(--text-secondary);
+            border-left: 0.25em solid var(--border);
+            margin-bottom: 16px;
+        }
 
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-bottom: 16px;
-                border-spacing: 0;
-                border: 1px solid var(--border);
-            }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+            border-spacing: 0;
+            border: 1px solid var(--border);
+        }
 
-            th,
-            td {
-                padding: 8px 13px;
-                border: 1px solid var(--border);
-            }
+        th,
+        td {
+            padding: 8px 13px;
+            border: 1px solid var(--border);
+        }
 
-            th {
-                font-weight: 600;
-                background-color: var(--secondary);
-            }
+        th {
+            font-weight: 600;
+            background-color: var(--secondary);
+        }
 
-            tr:nth-child(2n) {
-                background-color: var(--secondary);
-            }
+        tr:nth-child(2n) {
+            background-color: var(--secondary);
+        }
 
-            hr {
-                height: 0.25em;
-                padding: 0;
-                margin: 24px 0;
-                background-color: var(--border);
-                border: 0;
-            }
+        hr {
+            height: 0.25em;
+            padding: 0;
+            margin: 24px 0;
+            background-color: var(--border);
+            border: 0;
+        }
 
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            width: 260px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: var(--secondary);
+            border-right: 1px solid var(--border);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-wrap: break-word;
+        }
+
+        .sidebar-header {
+            font-size: 1.25em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 2px;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 8px 12px;
+            color: var(--text);
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar-nav a:hover {
+            background-color: rgba(110, 118, 129, 0.1);
+            text-decoration: none;
+        }
+
+        .sidebar-nav a.active {
+            background-color: rgba(110, 118, 129, 0.2);
+            color: var(--link);
+        }
+
+        .sidebar-section {
+            margin-bottom: 16px;
+        }
+
+        .sidebar-section-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .admonition {
+            margin-bottom: 16px;
+            padding: 16px;
+            border-radius: 6px;
+            border-left: 4px solid;
+        }
+
+        .admonition.note {
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left-color: var(--accent);
+        }
+
+        .admonition.warning {
+            background-color: rgba(210, 153, 34, 0.1);
+            border-left-color: var(--warning);
+        }
+
+        .admonition.danger {
+            background-color: rgba(248, 81, 73, 0.1);
+            border-left-color: var(--danger);
+        }
+
+        .admonition-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .admonition-title:before {
+            content: "💡";
+            margin-right: 8px;
+        }
+
+        .admonition.warning .admonition-title:before {
+            content: "⚠️";
+        }
+
+        .admonition.danger .admonition-title:before {
+            content: "🛑";
+        }
+
+        .note-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.4em;
+            font-size: 0.75em;
+            font-weight: 600;
+            border-radius: 6px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .badge.blue {
+            background-color: rgba(88, 166, 255, 0.2);
+            color: var(--accent-light);
+        }
+
+        .badge.green {
+            background-color: rgba(63, 185, 80, 0.2);
+            color: var(--success);
+        }
+
+        .badge.yellow {
+            background-color: rgba(210, 153, 34, 0.2);
+            color: var(--warning);
+        }
+
+        .badge.red {
+            background-color: rgba(248, 81, 73, 0.2);
+            color: var(--danger);
+        }
+
+        .header-anchor {
+            opacity: 0;
+            font-size: 0.85em;
+            margin-left: 0.5em;
+            transition: opacity 0.2s ease;
+        }
+
+        h1:hover .header-anchor,
+        h2:hover .header-anchor,
+        h3:hover .header-anchor,
+        h4:hover .header-anchor,
+        h5:hover .header-anchor,
+        h6:hover .header-anchor {
+            opacity: 1;
+        }
+
+        .toc {
+            background-color: var(--secondary);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .toc-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding-left: 16px;
+        }
+
+        .toc-list li {
+            margin-bottom: 4px;
+        }
+
+        .toc-list li a {
+            display: inline-block;
+            padding: 2px 0;
+        }
+
+        .breadcrumbs {
+            margin-bottom: 24px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .breadcrumbs a {
+            color: var(--text-secondary);
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--accent);
+        }
+
+        .breadcrumbs .separator {
+            margin: 0 8px;
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .metadata {
+            margin-bottom: 24px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .metadata span {
+            margin-right: 16px;
+        }
+
+        .metadata .icon {
+            margin-right: 4px;
+        }
+
+        .tabbed-content {
+            margin-bottom: 16px;
+        }
+
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .tab-nav button {
+            background: none;
+            border: none;
+            color: var(--text);
+            padding: 8px 16px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            font-size: 0.9em;
+            transition: all 0.2s ease;
+        }
+
+        .tab-nav button:hover {
+            color: var(--accent);
+        }
+
+        .tab-nav button.active {
+            border-bottom-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .file-tree {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.9em;
+            margin-bottom: 16px;
+        }
+
+        .file-tree ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .file-tree li {
+            margin-bottom: 4px;
+        }
+
+        .file-tree .folder:before {
+            content: "📁";
+            margin-right: 8px;
+        }
+
+        .file-tree .file:before {
+            content: "📄";
+            margin-right: 8px;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
             .container {
-                display: flex;
-                max-width: 1400px;
-                margin: 0 auto;
+                flex-direction: column;
             }
 
             .sidebar {
-                width: 260px;
-                position: sticky;
-                top: 0;
-                height: 100vh;
-                overflow-y: auto;
-                padding: 20px;
-                background-color: var(--secondary);
-                border-right: 1px solid var(--border);
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
             }
 
             .content {
-                flex: 1;
-                padding: 30px;
-                overflow-wrap: break-word;
+                padding: 20px;
             }
-
-            .sidebar-header {
-                font-size: 1.25em;
-                font-weight: 600;
-                margin-bottom: 20px;
-            }
-
-            .sidebar-nav {
-                list-style: none;
-                padding: 0;
-            }
-
-            .sidebar-nav li {
-                margin-bottom: 2px;
-            }
-
-            .sidebar-nav a {
-                display: block;
-                padding: 8px 12px;
-                color: var(--text);
-                border-radius: 6px;
-                transition: background-color 0.2s ease;
-            }
-
-            .sidebar-nav a:hover {
-                background-color: rgba(110, 118, 129, 0.1);
-                text-decoration: none;
-            }
-
-            .sidebar-nav a.active {
-                background-color: rgba(110, 118, 129, 0.2);
-                color: var(--link);
-            }
-
-            .sidebar-section {
-                margin-bottom: 16px;
-            }
-
-            .sidebar-section-title {
-                font-weight: 600;
-                margin-bottom: 8px;
-                color: var(--text-secondary);
-                font-size: 0.85em;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-            }
-
-            .admonition {
-                margin-bottom: 16px;
-                padding: 16px;
-                border-radius: 6px;
-                border-left: 4px solid;
-            }
-
-            .admonition.note {
-                background-color: rgba(88, 166, 255, 0.1);
-                border-left-color: var(--accent);
-            }
-
-            .admonition.warning {
-                background-color: rgba(210, 153, 34, 0.1);
-                border-left-color: var(--warning);
-            }
-
-            .admonition.danger {
-                background-color: rgba(248, 81, 73, 0.1);
-                border-left-color: var(--danger);
-            }
-
-            .admonition-title {
-                font-weight: 600;
-                margin-bottom: 8px;
-                display: flex;
-                align-items: center;
-            }
-
-            .admonition-title:before {
-                content: "💡";
-                margin-right: 8px;
-            }
-
-            .admonition.warning .admonition-title:before {
-                content: "⚠️";
-            }
-
-            .admonition.danger .admonition-title:before {
-                content: "🛑";
-            }
-
-            .note-icon {
-                width: 24px;
-                height: 24px;
-                margin-right: 8px;
-            }
-
-            .badge {
-                display: inline-block;
-                padding: 0.25em 0.4em;
-                font-size: 0.75em;
-                font-weight: 600;
-                border-radius: 6px;
-                text-transform: uppercase;
-                white-space: nowrap;
-                vertical-align: middle;
-            }
-
-            .badge.blue {
-                background-color: rgba(88, 166, 255, 0.2);
-                color: var(--accent-light);
-            }
-
-            .badge.green {
-                background-color: rgba(63, 185, 80, 0.2);
-                color: var(--success);
-            }
-
-            .badge.yellow {
-                background-color: rgba(210, 153, 34, 0.2);
-                color: var(--warning);
-            }
-
-            .badge.red {
-                background-color: rgba(248, 81, 73, 0.2);
-                color: var(--danger);
-            }
-
-            .header-anchor {
-                opacity: 0;
-                font-size: 0.85em;
-                margin-left: 0.5em;
-                transition: opacity 0.2s ease;
-            }
-
-            h1:hover .header-anchor,
-            h2:hover .header-anchor,
-            h3:hover .header-anchor,
-            h4:hover .header-anchor,
-            h5:hover .header-anchor,
-            h6:hover .header-anchor {
-                opacity: 1;
-            }
-
-            .toc {
-                background-color: var(--secondary);
-                border-radius: 6px;
-                padding: 16px;
-                margin-bottom: 24px;
-            }
-
-            .toc-title {
-                font-weight: 600;
-                margin-bottom: 12px;
-            }
-
-            .toc-list {
-                list-style: none;
-                padding-left: 16px;
-            }
-
-            .toc-list li {
-                margin-bottom: 4px;
-            }
-
-            .toc-list li a {
-                display: inline-block;
-                padding: 2px 0;
-            }
-
-            .breadcrumbs {
-                margin-bottom: 24px;
-                font-size: 0.9em;
-                color: var(--text-secondary);
-            }
-
-            .breadcrumbs a {
-                color: var(--text-secondary);
-            }
-
-            .breadcrumbs a:hover {
-                color: var(--accent);
-            }
-
-            .breadcrumbs .separator {
-                margin: 0 8px;
-            }
-
-            .highlight {
-                color: var(--accent);
-                font-weight: 600;
-            }
-
-            .metadata {
-                margin-bottom: 24px;
-                font-size: 0.9em;
-                color: var(--text-secondary);
-                border-bottom: 1px solid var(--border);
-                padding-bottom: 16px;
-            }
-
-            .metadata span {
-                margin-right: 16px;
-            }
-
-            .metadata .icon {
-                margin-right: 4px;
-            }
-
-            .tabbed-content {
-                margin-bottom: 16px;
-            }
-
-            .tab-nav {
-                display: flex;
-                border-bottom: 1px solid var(--border);
-                margin-bottom: 16px;
-            }
-
-            .tab-nav button {
-                background: none;
-                border: none;
-                color: var(--text);
-                padding: 8px 16px;
-                cursor: pointer;
-                border-bottom: 2px solid transparent;
-                margin-bottom: -1px;
-                font-size: 0.9em;
-                transition: all 0.2s ease;
-            }
-
-            .tab-nav button:hover {
-                color: var(--accent);
-            }
-
-            .tab-nav button.active {
-                border-bottom-color: var(--accent);
-                color: var(--accent);
-            }
-
-            .tab-content {
-                display: none;
-            }
-
-            .tab-content.active {
-                display: block;
-            }
-
-            .file-tree {
-                font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-                font-size: 0.9em;
-                margin-bottom: 16px;
-            }
-
-            .file-tree ul {
-                list-style: none;
-                padding-left: 20px;
-            }
-
-            .file-tree li {
-                margin-bottom: 4px;
-            }
-
-            .file-tree .folder:before {
-                content: "📁";
-                margin-right: 8px;
-            }
-
-            .file-tree .file:before {
-                content: "📄";
-                margin-right: 8px;
-            }
-
-            /* Mobile responsive adjustments */
-            @media (max-width: 768px) {
-                .container {
-                    flex-direction: column;
-                }
-
-                .sidebar {
-                    width: 100%;
-                    height: auto;
-                    position: static;
-                    border-right: none;
-                    border-bottom: 1px solid var(--border);
-                }
-
-                .content {
-                    padding: 20px;
-                }
-            }
-        </style>
-    </head>
-
-    <body>
-        <div class="container">
-            <aside class="sidebar">
-                <div class="sidebar-header">
-                    <a href="#">Netflix Auth Docs</a>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Authentication</div>
-                    <ul class="sidebar-nav">
-                        <li><a href="#introduction" class="active">Introduction</a></li>
-                        <li><a href="#cookie-basics">Cookie Basics</a></li>
-                        <li><a href="#authentication-flow">Authentication Flow</a></li>
-                        <li><a href="#security-measures">Security Measures</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Implementation</div>
-                    <ul class="sidebar-nav">
-                        <li><a href="#cookie-structure">Cookie Structure</a></li>
-                        <li><a href="#cookie-types">Cookie Types</a></li>
-                        <li><a href="#premium-authentication">Premium Authentication</a></li>
-                        <li><a href="#token-verification">Token Verification</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Technical Details</div>
-                    <ul class="sidebar-nav">
-                        <li><a href="#encryption-methods">Encryption Methods</a></li>
-                        <li><a href="#device-fingerprinting">Device Fingerprinting</a></li>
-                        <li><a href="#session-management">Session Management</a></li>
-                        <li><a href="#security-standards">Security Standards</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Resource Links</div>
-                    <ul class="sidebar-nav">
-                        <li><a href="https://fintechlearner.com/netflix-cookies/">Netflix Cookie Guide</a></li>
-                        <li><a href="https://fintechlearner.com/netflix-cookies/">Premium Cookie Analysis</a></li>
-                        <li><a href="https://fintechlearner.com/netflix-cookies/">Authentication Research</a></li>
-                        <li><a href="https://fintechlearner.com/netflix-cookies/">Security Standards 2025</a></li>
-                    </ul>
-                </div>
-            </aside>
-
-            <main class="content">
-                <div class="breadcrumbs">
-                    <a href="#">Documentation</a>
-                    <span class="separator">/</span>
-                    <a href="#">Authentication</a>
-                    <span class="separator">/</span>
-                    <span>Netflix Cookies</span>
-                </div>
-
-                <div class="metadata">
-                    <span><span class="icon">📅</span> Last updated: April 24, 2025</span>
-                    <span><span class="icon">👤</span> Author: Tech Documentation Team</span>
-                    <span><span class="icon">🏷️</span> <span class="badge blue">Technical</span> <span
-                            class="badge green">Authentication</span> <span class="badge yellow">Streaming</span></span>
-                </div>
-
-                <h1 id="introduction">Netflix Authentication Documentation <a href="#introduction"
-                        class="header-anchor">#</a></h1>
-                <p>This technical documentation provides a comprehensive examination of <a
-                        href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> and authentication
-                    mechanisms used in streaming platforms. The document covers cookie implementations, security
-                    measures, and authentication flows as observed in 2025.</p>
-
-                <div class="toc">
-                    <div class="toc-title">Table of Contents</div>
-                    <ul class="toc-list">
-                        <li><a href="#introduction">Introduction</a></li>
-                        <li><a href="#cookie-basics">Cookie Basics</a></li>
-                        <li><a href="#authentication-flow">Authentication Flow</a></li>
-                        <li><a href="#security-measures">Security Measures</a></li>
-                        <li><a href="#cookie-structure">Cookie Structure</a></li>
-                        <li><a href="#cookie-types">Cookie Types</a></li>
-                        <li><a href="#premium-authentication">Premium Authentication</a></li>
-                        <li><a href="#token-verification">Token Verification</a></li>
-                        <li><a href="#encryption-methods">Encryption Methods</a></li>
-                        <li><a href="#device-fingerprinting">Device Fingerprinting</a></li>
-                        <li><a href="#session-management">Session Management</a></li>
-                        <li><a href="#security-standards">Security Standards</a></li>
-                    </ul>
-                </div>
-
-                <div class="admonition note">
-                    <div class="admonition-title">Important Note</div>
-                    <p>This documentation is for educational purposes only. Understanding <a
-                            href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> and authentication
-                        mechanisms helps developers implement better security in their own applications. Always respect
-                        Terms of Service and applicable laws.</p>
-                </div>
-
-                <h2 id="cookie-basics">Cookie Basics <a href="#cookie-basics" class="header-anchor">#</a></h2>
-                <p>HTTP cookies are small text files containing key-value pairs that websites store in browsers. In the
-                    context of <a href="https://fintechlearner.com/netflix-cookies/">Netflix authentication</a>, cookies
-                    serve several critical functions:</p>
-
-                <ul>
-                    <li><strong>Session Management</strong>: Maintaining authenticated state across requests</li>
-                    <li><strong>User Identification</strong>: Associating requests with specific user accounts</li>
-                    <li><strong>Preference Storage</strong>: Storing user preferences and settings</li>
-                    <li><strong>Security Verification</strong>: Preventing unauthorized access attempts</li>
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="#">Netflix Auth Docs</a>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Authentication</div>
+                <ul class="sidebar-nav">
+                    <li><a href="#introduction" class="active">Introduction</a></li>
+                    <li><a href="#cookie-basics">Cookie Basics</a></li>
+                    <li><a href="#authentication-flow">Authentication Flow</a></li>
+                    <li><a href="#security-measures">Security Measures</a></li>
                 </ul>
+            </div>
 
-                <p>A typical <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookie</a> contains encrypted
-                    data representing a session token rather than actual credentials. This approach follows security
-                    best practices by avoiding the storage of sensitive authentication credentials in client-side
-                    storage.</p>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Implementation</div>
+                <ul class="sidebar-nav">
+                    <li><a href="#cookie-structure">Cookie Structure</a></li>
+                    <li><a href="#cookie-types">Cookie Types</a></li>
+                    <li><a href="#premium-authentication">Premium Authentication</a></li>
+                    <li><a href="#token-verification">Token Verification</a></li>
+                </ul>
+            </div>
 
-                <pre><code>// Example of HTTP headers when a cookie is set by Netflix servers
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Technical Details</div>
+                <ul class="sidebar-nav">
+                    <li><a href="#encryption-methods">Encryption Methods</a></li>
+                    <li><a href="#device-fingerprinting">Device Fingerprinting</a></li>
+                    <li><a href="#session-management">Session Management</a></li>
+                    <li><a href="#security-standards">Security Standards</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Resource Links</div>
+                <ul class="sidebar-nav">
+                    <li><a href="https://fintechlearner.com/netflix-cookies/">Netflix Cookie Guide</a></li>
+                    <li><a href="https://fintechlearner.com/netflix-cookies/">Premium Cookie Analysis</a></li>
+                    <li><a href="https://fintechlearner.com/netflix-cookies/">Authentication Research</a></li>
+                    <li><a href="https://fintechlearner.com/netflix-cookies/">Security Standards 2025</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="content">
+            <div class="breadcrumbs">
+                <a href="#">Documentation</a>
+                <span class="separator">/</span>
+                <a href="#">Authentication</a>
+                <span class="separator">/</span>
+                <span>Netflix Cookies</span>
+            </div>
+
+            <div class="metadata">
+                <span><span class="icon">📅</span> Last updated: April 24, 2025</span>
+                <span><span class="icon">👤</span> Author: Tech Documentation Team</span>
+                <span><span class="icon">🏷️</span> <span class="badge blue">Technical</span> <span
+                        class="badge green">Authentication</span> <span class="badge yellow">Streaming</span></span>
+            </div>
+
+            <h1 id="introduction">Netflix Authentication Documentation <a href="#introduction"
+                    class="header-anchor">#</a></h1>
+            <p>This technical documentation provides a comprehensive examination of <a
+                    href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> and authentication
+                mechanisms used in streaming platforms. The document covers cookie implementations, security
+                measures, and authentication flows as observed in 2025.</p>
+
+            <div class="toc">
+                <div class="toc-title">Table of Contents</div>
+                <ul class="toc-list">
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#cookie-basics">Cookie Basics</a></li>
+                    <li><a href="#authentication-flow">Authentication Flow</a></li>
+                    <li><a href="#security-measures">Security Measures</a></li>
+                    <li><a href="#cookie-structure">Cookie Structure</a></li>
+                    <li><a href="#cookie-types">Cookie Types</a></li>
+                    <li><a href="#premium-authentication">Premium Authentication</a></li>
+                    <li><a href="#token-verification">Token Verification</a></li>
+                    <li><a href="#encryption-methods">Encryption Methods</a></li>
+                    <li><a href="#device-fingerprinting">Device Fingerprinting</a></li>
+                    <li><a href="#session-management">Session Management</a></li>
+                    <li><a href="#security-standards">Security Standards</a></li>
+                </ul>
+            </div>
+
+            <div class="admonition note">
+                <div class="admonition-title">Important Note</div>
+                <p>This documentation is for educational purposes only. Understanding <a
+                        href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> and authentication
+                    mechanisms helps developers implement better security in their own applications. Always respect
+                    Terms of Service and applicable laws.</p>
+            </div>
+
+            <h2 id="cookie-basics">Cookie Basics <a href="#cookie-basics" class="header-anchor">#</a></h2>
+            <p>HTTP cookies are small text files containing key-value pairs that websites store in browsers. In the
+                context of <a href="https://fintechlearner.com/netflix-cookies/">Netflix authentication</a>, cookies
+                serve several critical functions:</p>
+
+            <ul>
+                <li><strong>Session Management</strong>: Maintaining authenticated state across requests</li>
+                <li><strong>User Identification</strong>: Associating requests with specific user accounts</li>
+                <li><strong>Preference Storage</strong>: Storing user preferences and settings</li>
+                <li><strong>Security Verification</strong>: Preventing unauthorized access attempts</li>
+            </ul>
+
+            <p>A typical <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookie</a> contains encrypted
+                data representing a session token rather than actual credentials. This approach follows security
+                best practices by avoiding the storage of sensitive authentication credentials in client-side
+                storage.</p>
+
+            <pre><code>// Example of HTTP headers when a cookie is set by Netflix servers
                                     Set-Cookie: NetflixId=v%3D2%26ct%3DBQAOAAEBEJiKzI4MT_fVvHtxq4yYCUyBQCkIp_SJ5lqCLXXc6PaXlBL9sbMkJRE7PkKsWXfKm28d_GiZkbDpBH3c4RdT5GNWXKGiOW45QUqD33UJMQ..;
                                     Domain=.netflix.com; Path=/; Expires=Thu, 24 Apr 2026 12:00:00 GMT; Secure; HttpOnly; SameSite=Lax</code></pre>
 
-                <h2 id="authentication-flow">Authentication Flow <a href="#authentication-flow"
-                        class="header-anchor">#</a></h2>
-                <p>The <a href="https://fintechlearner.com/netflix-cookies/">Netflix authentication</a> flow involves
-                    several steps to securely establish and maintain user sessions:</p>
+            <h2 id="authentication-flow">Authentication Flow <a href="#authentication-flow" class="header-anchor">#</a>
+            </h2>
+            <p>The <a href="https://fintechlearner.com/netflix-cookies/">Netflix authentication</a> flow involves
+                several steps to securely establish and maintain user sessions:</p>
 
-                <ol>
-                    <li><strong>Initial Authentication</strong>: User provides credentials (email/password)</li>
-                    <li><strong>Credential Verification</strong>: Server validates credentials against stored user
-                        database</li>
-                    <li><strong>Session Token Generation</strong>: Upon successful verification, server generates
-                        encrypted session tokens</li>
-                    <li><strong>Cookie Creation</strong>: Session tokens are packaged into <a
-                            href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> and sent to the
-                        browser</li>
-                    <li><strong>Cookie Storage</strong>: Browser stores cookies according to specified attributes</li>
-                    <li><strong>Subsequent Requests</strong>: Browser automatically includes cookies with each request
-                        to Netflix domains</li>
-                    <li><strong>Token Validation</strong>: Server validates tokens on each request before serving
-                        content</li>
-                </ol>
+            <ol>
+                <li><strong>Initial Authentication</strong>: User provides credentials (email/password)</li>
+                <li><strong>Credential Verification</strong>: Server validates credentials against stored user
+                    database</li>
+                <li><strong>Session Token Generation</strong>: Upon successful verification, server generates
+                    encrypted session tokens</li>
+                <li><strong>Cookie Creation</strong>: Session tokens are packaged into <a
+                        href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> and sent to the
+                    browser</li>
+                <li><strong>Cookie Storage</strong>: Browser stores cookies according to specified attributes</li>
+                <li><strong>Subsequent Requests</strong>: Browser automatically includes cookies with each request
+                    to Netflix domains</li>
+                <li><strong>Token Validation</strong>: Server validates tokens on each request before serving
+                    content</li>
+            </ol>
 
-                <p>This flow maintains a secure authentication state without requiring users to re-enter credentials for
-                    each interaction with the service.</p>
+            <p>This flow maintains a secure authentication state without requiring users to re-enter credentials for
+                each interaction with the service.</p>
 
-                <div class="tabbed-content">
-                    <div class="tab-nav">
-                        <button class="tab-button active" onclick="switchTab(event, 'tab1')">Initial Request
-                            Flow</button>
-                        <button class="tab-button" onclick="switchTab(event, 'tab2')">Subsequent Request Flow</button>
-                        <button class="tab-button" onclick="switchTab(event, 'tab3')">Token Refresh Flow</button>
-                    </div>
+            <div class="tabbed-content">
+                <div class="tab-nav">
+                    <button class="tab-button active" onclick="switchTab(event, 'tab1')">Initial Request
+                        Flow</button>
+                    <button class="tab-button" onclick="switchTab(event, 'tab2')">Subsequent Request Flow</button>
+                    <button class="tab-button" onclick="switchTab(event, 'tab3')">Token Refresh Flow</button>
+                </div>
 
-                    <div id="tab1" class="tab-content active">
-                        <pre><code>// Initial Authentication Request Flow
+                <div id="tab1" class="tab-content active">
+                    <pre><code>// Initial Authentication Request Flow
                                             1. Browser → Server: POST /login {email, password}
                                             2. Server: Verifies credentials against database
                                             3. Server: Generates session token with encryption key
                                             4. Server → Browser: Set-Cookie headers with session token
                                             5. Browser: Stores cookies according to attributes</code></pre>
-                    </div>
+                </div>
 
-                    <div id="tab2" class="tab-content">
-                        <pre><code>// Subsequent Request Flow
+                <div id="tab2" class="tab-content">
+                    <pre><code>// Subsequent Request Flow
                                             1. Browser → Server: GET /browse Cookie: NetflixId=token
                                             2. Server: Decrypts and validates token
                                             3. Server: Checks token expiration and permissions
                                             4. Server: Verifies device fingerprint (if enabled)
                                             5. Server → Browser: Returns requested content if valid</code></pre>
-                    </div>
+                </div>
 
-                    <div id="tab3" class="tab-content">
-                        <pre><code>// Token Refresh Flow
+                <div id="tab3" class="tab-content">
+                    <pre><code>// Token Refresh Flow
                                             1. Browser → Server: GET /api/resource Cookie: NetflixId=token
                                             2. Server: Determines token is near expiration
                                             3. Server: Generates new token
                                             4. Server → Browser: Returns response with updated Set-Cookie header
                                             5. Browser: Updates stored cookies with new values</code></pre>
-                    </div>
                 </div>
+            </div>
 
-                <h2 id="security-measures">Security Measures <a href="#security-measures" class="header-anchor">#</a>
-                </h2>
-                <p>As of 2025, <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> implement
-                    several advanced security measures to protect user accounts:</p>
+            <h2 id="security-measures">Security Measures <a href="#security-measures" class="header-anchor">#</a>
+            </h2>
+            <p>As of 2025, <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> implement
+                several advanced security measures to protect user accounts:</p>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Security Feature</th>
-                            <th>Description</th>
-                            <th>Implementation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Secure Flag</td>
-                            <td>Ensures cookies are only sent over HTTPS connections</td>
-                            <td>Set-Cookie: ...; <code>Secure</code></td>
-                        </tr>
-                        <tr>
-                            <td>HttpOnly Flag</td>
-                            <td>Prevents JavaScript access to cookie values</td>
-                            <td>Set-Cookie: ...; <code>HttpOnly</code></td>
-                        </tr>
-                        <tr>
-                            <td>SameSite Attribute</td>
-                            <td>Controls cross-site request behavior</td>
-                            <td>Set-Cookie: ...; <code>SameSite=Lax</code></td>
-                        </tr>
-                        <tr>
-                            <td>Device Binding</td>
-                            <td>Associates authentication tokens with specific devices</td>
-                            <td>Encrypted device fingerprint in token payload</td>
-                        </tr>
-                        <tr>
-                            <td>Geolocation Check</td>
-                            <td>Verifies request origins against normal usage patterns</td>
-                            <td>IP geolocation comparison on token validation</td>
-                        </tr>
-                        <tr>
-                            <td>Short Expiration</td>
-                            <td>Limits authentication window to reduce risk</td>
-                            <td>Expiration times between 1-14 days</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Security Feature</th>
+                        <th>Description</th>
+                        <th>Implementation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Secure Flag</td>
+                        <td>Ensures cookies are only sent over HTTPS connections</td>
+                        <td>Set-Cookie: ...; <code>Secure</code></td>
+                    </tr>
+                    <tr>
+                        <td>HttpOnly Flag</td>
+                        <td>Prevents JavaScript access to cookie values</td>
+                        <td>Set-Cookie: ...; <code>HttpOnly</code></td>
+                    </tr>
+                    <tr>
+                        <td>SameSite Attribute</td>
+                        <td>Controls cross-site request behavior</td>
+                        <td>Set-Cookie: ...; <code>SameSite=Lax</code></td>
+                    </tr>
+                    <tr>
+                        <td>Device Binding</td>
+                        <td>Associates authentication tokens with specific devices</td>
+                        <td>Encrypted device fingerprint in token payload</td>
+                    </tr>
+                    <tr>
+                        <td>Geolocation Check</td>
+                        <td>Verifies request origins against normal usage patterns</td>
+                        <td>IP geolocation comparison on token validation</td>
+                    </tr>
+                    <tr>
+                        <td>Short Expiration</td>
+                        <td>Limits authentication window to reduce risk</td>
+                        <td>Expiration times between 1-14 days</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                <div class="admonition warning">
-                    <div class="admonition-title">Security Warning</div>
-                    <p>Despite these measures, attempting to extract or share <a
-                            href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> violates Terms of
-                        Service and may compromise account security. Modern tokens include device-specific data that
-                        triggers security alerts when used on unauthorized devices.</p>
-                </div>
+            <div class="admonition warning">
+                <div class="admonition-title">Security Warning</div>
+                <p>Despite these measures, attempting to extract or share <a
+                        href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> violates Terms of
+                    Service and may compromise account security. Modern tokens include device-specific data that
+                    triggers security alerts when used on unauthorized devices.</p>
+            </div>
 
-                <h2 id="cookie-structure">Cookie Structure <a href="#cookie-structure" class="header-anchor">#</a></h2>
-                <p>The structure of <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookies in 2025</a>
-                    follows a complex format with multiple security layers:</p>
+            <h2 id="cookie-structure">Cookie Structure <a href="#cookie-structure" class="header-anchor">#</a></h2>
+            <p>The structure of <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookies in 2025</a>
+                follows a complex format with multiple security layers:</p>
 
-                <pre><code>// Simplified representation of Netflix cookie structure
+            <pre><code>// Simplified representation of Netflix cookie structure
                                     {
                                         "header": {
                                         "alg": "HS256",         // Algorithm used for signature
@@ -755,37 +754,37 @@
                                     "signature": "..."        // HMAC signature of header and payload
 }</code></pre>
 
-                <p>This structure employs JSON Web Token (JWT) principles but with proprietary extensions to enhance
-                    security. The actual cookie values are base64-encoded and encrypted using service-specific keys.</p>
+            <p>This structure employs JSON Web Token (JWT) principles but with proprietary extensions to enhance
+                security. The actual cookie values are base64-encoded and encrypted using service-specific keys.</p>
 
-                <h2 id="cookie-types">Cookie Types <a href="#cookie-types" class="header-anchor">#</a></h2>
-                <p>Netflix employs several types of cookies for different purposes:</p>
+            <h2 id="cookie-types">Cookie Types <a href="#cookie-types" class="header-anchor">#</a></h2>
+            <p>Netflix employs several types of cookies for different purposes:</p>
 
-                <div class="file-tree">
-                    <ul>
-                        <li class="folder">Netflix Cookie Types
-                            <ul>
-                                <li class="file">NetflixId: Primary authentication cookie</li>
-                                <li class="file">NetflixSecure: Enhanced security token</li>
-                                <li class="file">NetflixLocale: Geographic and language preferences</li>
-                                <li class="file">NetflixDevice: Device-specific identifiers</li>
-                                <li class="file">NetflixProfile: Current profile selection</li>
-                                <li class="file">NetflixAnalytics: Usage metrics (non-critical)</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+            <div class="file-tree">
+                <ul>
+                    <li class="folder">Netflix Cookie Types
+                        <ul>
+                            <li class="file">NetflixId: Primary authentication cookie</li>
+                            <li class="file">NetflixSecure: Enhanced security token</li>
+                            <li class="file">NetflixLocale: Geographic and language preferences</li>
+                            <li class="file">NetflixDevice: Device-specific identifiers</li>
+                            <li class="file">NetflixProfile: Current profile selection</li>
+                            <li class="file">NetflixAnalytics: Usage metrics (non-critical)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
 
-                <p>Of these, the <code>NetflixId</code> and <code>NetflixSecure</code> cookies are the most critical for
-                    authentication. Together they form the core of the <a
-                        href="https://fintechlearner.com/netflix-cookies/">Netflix cookie</a> authentication system.</p>
+            <p>Of these, the <code>NetflixId</code> and <code>NetflixSecure</code> cookies are the most critical for
+                authentication. Together they form the core of the <a
+                    href="https://fintechlearner.com/netflix-cookies/">Netflix cookie</a> authentication system.</p>
 
-                <h2 id="premium-authentication">Premium Authentication <a href="#premium-authentication"
-                        class="header-anchor">#</a></h2>
-                <p><a href="https://fintechlearner.com/netflix-cookies/">Netflix premium cookies</a> contain additional
-                    data related to subscription status and content access rights:</p>
+            <h2 id="premium-authentication">Premium Authentication <a href="#premium-authentication"
+                    class="header-anchor">#</a></h2>
+            <p><a href="https://fintechlearner.com/netflix-cookies/">Netflix premium cookies</a> contain additional
+                data related to subscription status and content access rights:</p>
 
-                <pre><code>// Premium authentication token additional fields
+            <pre><code>// Premium authentication token additional fields
                                     {
                                         // ... standard fields
                                         "tier": "premium",         // Subscription level
@@ -802,57 +801,59 @@
   }
 }</code></pre>
 
-                <p>These additional fields inform the streaming application about which premium features should be
-                    enabled for the authenticated session. The token is cryptographically signed to prevent modification
-                    of these values.</p>
+            <p>These additional fields inform the streaming application about which premium features should be
+                enabled for the authenticated session. The token is cryptographically signed to prevent modification
+                of these values.</p>
 
-                <div class="admonition note">
-                    <div class="admonition-title">Educational Note</div>
-                    <p>Understanding how <a href="https://fintechlearner.com/netflix-cookies/">Netflix premium
-                            cookies</a> store subscription information is valuable for developers building similar
-                        authentication systems. For complete information on Netflix authentication technologies, visit
-                        <a href="https://fintechlearner.com/netflix-cookies/">this technical guide</a>.</p>
-                </div>
+            <div class="admonition note">
+                <div class="admonition-title">Educational Note</div>
+                <p>Understanding how <a href="https://fintechlearner.com/netflix-cookies/">Netflix premium
+                        cookies</a> store subscription information is valuable for developers building similar
+                    authentication systems. For complete information on Netflix authentication technologies, visit
+                    <a href="https://fintechlearner.com/netflix-cookies/">this technical guide</a>.
+                </p>
+            </div>
 
-                <h2 id="token-verification">Token Verification <a href="#token-verification" class="header-anchor">#</a>
-                </h2>
-                <p>When a request containing <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a>
-                    reaches the server, several verification steps occur:</p>
+            <h2 id="token-verification">Token Verification <a href="#token-verification" class="header-anchor">#</a>
+            </h2>
+            <p>When a request containing <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a>
+                reaches the server, several verification steps occur:</p>
 
-                <ol>
-                    <li><strong>Signature Verification</strong>: Validates the cryptographic signature to ensure token
-                        hasn't been tampered with</li>
-                    <li><strong>Expiration Check</strong>: Confirms the token hasn't expired based on the
-                        <code>exp</code> claim</li>
-                    <li><strong>Device Verification</strong>: Compares the stored device fingerprint with current
-                        request characteristics</li>
-                    <li><strong>Geolocation Analysis</strong>: Evaluates whether the request origin is consistent with
-                        normal usage patterns</li>
-                    <li><strong>Rate Limiting</strong>: Monitors for abnormal request patterns that might indicate
-                        automated access</li>
-                    <li><strong>Subscription Validation</strong>: Verifies that the subscription status is active and
-                        payment is current</li>
-                </ol>
+            <ol>
+                <li><strong>Signature Verification</strong>: Validates the cryptographic signature to ensure token
+                    hasn't been tampered with</li>
+                <li><strong>Expiration Check</strong>: Confirms the token hasn't expired based on the
+                    <code>exp</code> claim
+                </li>
+                <li><strong>Device Verification</strong>: Compares the stored device fingerprint with current
+                    request characteristics</li>
+                <li><strong>Geolocation Analysis</strong>: Evaluates whether the request origin is consistent with
+                    normal usage patterns</li>
+                <li><strong>Rate Limiting</strong>: Monitors for abnormal request patterns that might indicate
+                    automated access</li>
+                <li><strong>Subscription Validation</strong>: Verifies that the subscription status is active and
+                    payment is current</li>
+            </ol>
 
-                <p>If any of these checks fail, the request is rejected and the user is redirected to the login page or
-                    presented with a security challenge.</p>
+            <p>If any of these checks fail, the request is rejected and the user is redirected to the login page or
+                presented with a security challenge.</p>
 
-                <h2 id="encryption-methods">Encryption Methods <a href="#encryption-methods" class="header-anchor">#</a>
-                </h2>
-                <p>As of 2025, <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> employ advanced
-                    encryption techniques:</p>
+            <h2 id="encryption-methods">Encryption Methods <a href="#encryption-methods" class="header-anchor">#</a>
+            </h2>
+            <p>As of 2025, <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> employ advanced
+                encryption techniques:</p>
 
-                <ul>
-                    <li><strong>Transport Layer Security</strong>: All communication occurs over TLS 1.3 with PFS
-                        (Perfect Forward Secrecy)</li>
-                    <li><strong>Token Encryption</strong>: AES-256-GCM for payload encryption</li>
-                    <li><strong>Signature Algorithm</strong>: HMAC with SHA-256 or ECDSA with P-256</li>
-                    <li><strong>Key Rotation</strong>: Regular rotation of encryption keys (typically every 24-48 hours)
-                    </li>
-                    <li><strong>Salt Generation</strong>: Unique salt values for each token generation</li>
-                </ul>
+            <ul>
+                <li><strong>Transport Layer Security</strong>: All communication occurs over TLS 1.3 with PFS
+                    (Perfect Forward Secrecy)</li>
+                <li><strong>Token Encryption</strong>: AES-256-GCM for payload encryption</li>
+                <li><strong>Signature Algorithm</strong>: HMAC with SHA-256 or ECDSA with P-256</li>
+                <li><strong>Key Rotation</strong>: Regular rotation of encryption keys (typically every 24-48 hours)
+                </li>
+                <li><strong>Salt Generation</strong>: Unique salt values for each token generation</li>
+            </ul>
 
-                <pre><code>// Simplified encryption process
+            <pre><code>// Simplified encryption process
                                     function generateSecureCookie(userData, deviceData) {
   const header = {alg: 'HS256', enc: 'A256GCM', kid: currentKeyId };
                                     const payload = {...userData, ...deviceData, iat: now(), exp: now() + EXPIRY };
@@ -868,89 +869,89 @@
                                     base64Encode(signature);
 }</code></pre>
 
-                <p>This multi-layered approach makes <a href="https://fintechlearner.com/netflix-cookies/">Netflix
-                        cookies</a> highly resistant to tampering or forgery attempts.</p>
+            <p>This multi-layered approach makes <a href="https://fintechlearner.com/netflix-cookies/">Netflix
+                    cookies</a> highly resistant to tampering or forgery attempts.</p>
 
-                <h2 id="device-fingerprinting">Device Fingerprinting <a href="#device-fingerprinting"
-                        class="header-anchor">#</a></h2>
-                <p>Device fingerprinting is a critical security feature of modern <a
-                        href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a>. The system collects
-                    multiple device characteristics to create a unique identifier:</p>
+            <h2 id="device-fingerprinting">Device Fingerprinting <a href="#device-fingerprinting"
+                    class="header-anchor">#</a></h2>
+            <p>Device fingerprinting is a critical security feature of modern <a
+                    href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a>. The system collects
+                multiple device characteristics to create a unique identifier:</p>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Fingerprint Component</th>
-                            <th>Description</th>
-                            <th>Collection Method</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>User Agent</td>
-                            <td>Browser and OS information</td>
-                            <td>HTTP headers</td>
-                        </tr>
-                        <tr>
-                            <td>Screen Resolution</td>
-                            <td>Display dimensions and color depth</td>
-                            <td>JavaScript API</td>
-                        </tr>
-                        <tr>
-                            <td>Installed Fonts</td>
-                            <td>System font fingerprinting</td>
-                            <td>Canvas fingerprinting</td>
-                        </tr>
-                        <tr>
-                            <td>WebGL Fingerprint</td>
-                            <td>Graphics processor identification</td>
-                            <td>WebGL rendering</td>
-                        </tr>
-                        <tr>
-                            <td>Language Settings</td>
-                            <td>Browser language preferences</td>
-                            <td>Navigator API</td>
-                        </tr>
-                        <tr>
-                            <td>Hardware Concurrency</td>
-                            <td>CPU core count</td>
-                            <td>Navigator API</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fingerprint Component</th>
+                        <th>Description</th>
+                        <th>Collection Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>User Agent</td>
+                        <td>Browser and OS information</td>
+                        <td>HTTP headers</td>
+                    </tr>
+                    <tr>
+                        <td>Screen Resolution</td>
+                        <td>Display dimensions and color depth</td>
+                        <td>JavaScript API</td>
+                    </tr>
+                    <tr>
+                        <td>Installed Fonts</td>
+                        <td>System font fingerprinting</td>
+                        <td>Canvas fingerprinting</td>
+                    </tr>
+                    <tr>
+                        <td>WebGL Fingerprint</td>
+                        <td>Graphics processor identification</td>
+                        <td>WebGL rendering</td>
+                    </tr>
+                    <tr>
+                        <td>Language Settings</td>
+                        <td>Browser language preferences</td>
+                        <td>Navigator API</td>
+                    </tr>
+                    <tr>
+                        <td>Hardware Concurrency</td>
+                        <td>CPU core count</td>
+                        <td>Navigator API</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                <p>These characteristics are hashed together to create a device identifier that is embedded in <a
-                        href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a>. If the same cookie is
-                    used on a different device, the fingerprint mismatch triggers a security check.</p>
+            <p>These characteristics are hashed together to create a device identifier that is embedded in <a
+                    href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a>. If the same cookie is
+                used on a different device, the fingerprint mismatch triggers a security check.</p>
 
-                <div class="admonition danger">
-                    <div class="admonition-title">Technical Limitation</div>
-                    <p>This device binding mechanism is why <a
-                            href="https://fintechlearner.com/netflix-cookies/">Netflix cookie</a> sharing is technically
-                        problematic and counter to security best practices. Modern implementations will detect device
-                        mismatches and invalidate sessions.</p>
-                </div>
+            <div class="admonition danger">
+                <div class="admonition-title">Technical Limitation</div>
+                <p>This device binding mechanism is why <a href="https://fintechlearner.com/netflix-cookies/">Netflix
+                        cookie</a> sharing is technically
+                    problematic and counter to security best practices. Modern implementations will detect device
+                    mismatches and invalidate sessions.</p>
+            </div>
 
-                <h2 id="session-management">Session Management <a href="#session-management" class="header-anchor">#</a>
-                </h2>
-                <p>Netflix implements sophisticated session management through its cookie system:</p>
+            <h2 id="session-management">Session Management <a href="#session-management" class="header-anchor">#</a>
+            </h2>
+            <p>Netflix implements sophisticated session management through its cookie system:</p>
 
-                <ul>
-                    <li><strong>Session Timeouts</strong>: Automatic expiration after periods of inactivity</li>
-                    <li><strong>Concurrent Session Limits</strong>: Enforcement of subscription-based concurrent stream
-                        limits</li>
-                    <li><strong>Session Invalidation</strong>: The "Sign out of all devices" feature invalidates all
-                        active <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a></li>
-                    <li><strong>Session Upgrade/Downgrade</strong>: Automatic token modification when subscription
-                        status changes</li>
-                    <li><strong>Suspicious Activity Detection</strong>: ML-based anomaly detection for unusual session
-                        patterns</li>
-                </ul>
+            <ul>
+                <li><strong>Session Timeouts</strong>: Automatic expiration after periods of inactivity</li>
+                <li><strong>Concurrent Session Limits</strong>: Enforcement of subscription-based concurrent stream
+                    limits</li>
+                <li><strong>Session Invalidation</strong>: The "Sign out of all devices" feature invalidates all
+                    active <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a></li>
+                <li><strong>Session Upgrade/Downgrade</strong>: Automatic token modification when subscription
+                    status changes</li>
+                <li><strong>Suspicious Activity Detection</strong>: ML-based anomaly detection for unusual session
+                    patterns</li>
+            </ul>
 
-                <p>When suspicious activity is detected, the system may force re-authentication or implement additional
-                    verification steps like email confirmation.</p>
+            <p>When suspicious activity is detected, the system may force re-authentication or implement additional
+                verification steps like email confirmation.</p>
 
-                <pre><code>// Server-side session invalidation process
+            <pre><code>// Server-side session invalidation process
                                     function invalidateAllSessions(userId) {
   // 1. Add current token signatures to blacklist
   const userSessions = getUserActiveSessions(userId);
@@ -963,71 +964,71 @@
                                     return {success: true, invalidatedSessions: userSessions.length };
 }</code></pre>
 
-                <h2 id="security-standards">Security Standards <a href="#security-standards" class="header-anchor">#</a>
-                </h2>
-                <p>The <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookie</a> authentication system
-                    adheres to several security standards and best practices:</p>
+            <h2 id="security-standards">Security Standards <a href="#security-standards" class="header-anchor">#</a>
+            </h2>
+            <p>The <a href="https://fintechlearner.com/netflix-cookies/">Netflix cookie</a> authentication system
+                adheres to several security standards and best practices:</p>
 
-                <ul>
-                    <li><strong>OWASP Authentication Guidelines</strong>: Following key recommendations for secure
-                        authentication</li>
-                    <li><strong>NIST Digital Identity Guidelines</strong>: Implementing appropriate authentication
-                        assurance levels</li>
-                    <li><strong>GDPR Compliance</strong>: Ensuring user data in authentication tokens is properly
-                        protected</li>
-                    <li><strong>PCI DSS</strong>: Following payment card industry standards for handling payment-related
-                        information</li>
-                </ul>
+            <ul>
+                <li><strong>OWASP Authentication Guidelines</strong>: Following key recommendations for secure
+                    authentication</li>
+                <li><strong>NIST Digital Identity Guidelines</strong>: Implementing appropriate authentication
+                    assurance levels</li>
+                <li><strong>GDPR Compliance</strong>: Ensuring user data in authentication tokens is properly
+                    protected</li>
+                <li><strong>PCI DSS</strong>: Following payment card industry standards for handling payment-related
+                    information</li>
+            </ul>
 
-                <p>These standards guide the implementation of <a
-                        href="https://fintechlearner.com/netflix-cookies/">Netflix cookies</a> and ensure they meet
-                    industry security requirements.</p>
+            <p>These standards guide the implementation of <a href="https://fintechlearner.com/netflix-cookies/">Netflix
+                    cookies</a> and ensure they meet
+                industry security requirements.</p>
 
-                <hr>
+            <hr>
 
-                <p>For more detailed information about <a href="https://fintechlearner.com/netflix-cookies/">Netflix
-                        cookies in 2025</a>, authentication technologies, and streaming platform security, visit our <a
-                        href="https://fintechlearner.com/netflix-cookies/">comprehensive technical guide</a>. This
-                    documentation is updated regularly to reflect the latest security implementations.</p>
+            <p>For more detailed information about <a href="https://fintechlearner.com/netflix-cookies/">Netflix
+                    cookies in 2025</a>, authentication technologies, and streaming platform security, visit our <a
+                    href="https://fintechlearner.com/netflix-cookies/">comprehensive technical guide</a>. This
+                documentation is updated regularly to reflect the latest security implementations.</p>
 
-                <div class="admonition note">
-                    <div class="admonition-title">Additional Resources</div>
-                    <p>For developers implementing similar authentication systems, our <a
-                            href="https://fintechlearner.com/netflix-cookies/">Netflix authentication reference</a>
-                        provides valuable insights into cookie security best practices.</p>
-                </div>
-            </main>
-        </div>
+            <div class="admonition note">
+                <div class="admonition-title">Additional Resources</div>
+                <p>For developers implementing similar authentication systems, our <a
+                        href="https://fintechlearner.com/netflix-cookies/">Netflix authentication reference</a>
+                    provides valuable insights into cookie security best practices.</p>
+            </div>
+        </main>
+    </div>
 
-        <script>
-            function switchTab(event, tabId) {
-                // Hide all tab contents
-                const tabContents = document.getElementsByClassName('tab-content');
-                for (let i = 0; i < tabContents.length; i++) {
-                    tabContents[i].classList.remove('active');
-                }
-
-                // Remove active class from all tab buttons
-                const tabButtons = document.getElementsByClassName('tab-button');
-                for (let i = 0; i < tabButtons.length; i++) {
-                    tabButtons[i].classList.remove('active');
-                }
-
-                // Show the selected tab content and mark button as active
-                document.getElementById(tabId).classList.add('active');
-                event.currentTarget.classList.add('active');
+    <script>
+        function switchTab(event, tabId) {
+            // Hide all tab contents
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
             }
 
-            // Track link clicks for educational purposes
-            document.addEventListener('DOMContentLoaded', function () {
-                const links = document.querySelectorAll('a[href*="fintechlearner.com"]');
-                for (let i = 0; i < links.length; i++) {
-                    links[i].addEventListener('click', function () {
-                        console.log('Resource link clicked: ' + this.href);
-                    });
-                }
-            });
-        </script>
-    </body>
+            // Remove active class from all tab buttons
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
 
-    </html>
+            // Show the selected tab content and mark button as active
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Track link clicks for educational purposes
+        document.addEventListener('DOMContentLoaded', function () {
+            const links = document.querySelectorAll('a[href*="fintechlearner.com"]');
+            for (let i = 0; i < links.length; i++) {
+                links[i].addEventListener('click', function () {
+                    console.log('Resource link clicked: ' + this.href);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
